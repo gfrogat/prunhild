@@ -23,4 +23,4 @@ pip install git+https://github.com/gfrogat/prunhild
 The folder [examples](./examples) contains an example using MNIST on how to use the library.
 If you encounter problems or have any questions don't hesitate to open an issue.
 
-- prunhild example on MNIST - [code](.examples/mnist)
+- prunhild example on MNIST - [code](./examples/mnist)

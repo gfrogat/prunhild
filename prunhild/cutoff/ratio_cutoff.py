@@ -70,7 +70,7 @@ class LocalRatioCutoff(RatioCutoff):
         ratio (float): ratio of weights that should be pruned
 
     The cutoff-values are computed for every layer, where the cutoff-value is the
-    ratio * 100 percentile of the parameter values.
+    <ratio> quantile of the parameter values.
     """
 
     def compute_cutoff_values(self, params, prune_masks_old):
@@ -92,7 +92,7 @@ class LocalRatioCutoff(RatioCutoff):
                 continue
             weights = param.data[prune_mask > 0.5].abs().flatten().cpu().numpy()
             if len(weights) != 0:
-                cutoff_values.append(np.percentile(weights, self.ratio * 100.0))
+                cutoff_values.append(np.quantile(weights, self.ratio))
             else:
                 cutoff_values.append(param.data.abs().max().item())
 
@@ -107,7 +107,7 @@ class GlobalRatioCutoff(RatioCutoff):
         ratio (float): ratio of weights that should be pruned
 
     The cutoff-values are computed over all layers, where the cutoff-value is the
-    ratio * 100 percentile of the parameter values in all layers.
+    <ratio> quantile of the parameter values in all layers.
     """
 
     def compute_cutoff_values(self, params, prune_masks_old):
@@ -145,7 +145,7 @@ class GlobalRatioCutoff(RatioCutoff):
                 index += n_param
 
         # compute cutoff value
-        global_cutoff_value = np.percentile(np.abs(weights), self.ratio * 100)
+        global_cutoff_value = np.quantile(np.abs(weights), self.ratio)
         del (weights)
 
         # create list of global cutoff values
